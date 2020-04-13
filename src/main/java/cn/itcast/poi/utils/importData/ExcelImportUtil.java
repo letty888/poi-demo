@@ -1,4 +1,4 @@
-package cn.itcast.poi.utils;
+package cn.itcast.poi.utils.importData;
 
 import cn.itcast.poi.annotation.ExcelAttribute;
 import org.apache.poi.ss.usermodel.Cell;
@@ -6,6 +6,7 @@ import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -14,21 +15,27 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 此工具类不适用于导入百万条数据,但对轻量级数据的导入非常高效
+ *
+ * @param <T>
+ * @author zhang
+ */
 
 public class ExcelImportUtil<T> {
- 
+
     private Class clazz;
-    private  Field fields[];
- 
+    private Field fields[];
+
     public ExcelImportUtil(Class clazz) {
         this.clazz = clazz;
         fields = clazz.getDeclaredFields();
     }
- 
+
     /**
      * 基于注解读取excel
      */
-    public List<T> readExcel(InputStream is, int rowIndex,int cellIndex) {
+    public List<T> readExcel(InputStream is, int rowIndex, int cellIndex) {
         List<T> list = new ArrayList<T>();
         T entity = null;
         try {
@@ -45,10 +52,10 @@ public class ExcelImportUtil<T> {
                 for (int j = cellIndex; j < row.getLastCellNum(); j++) {
                     Cell cell = row.getCell(j);
                     for (Field field : fields) {
-                        if(field.isAnnotationPresent(ExcelAttribute.class)){
+                        if (field.isAnnotationPresent(ExcelAttribute.class)) {
                             field.setAccessible(true);
                             ExcelAttribute ea = field.getAnnotation(ExcelAttribute.class);
-                            if(j == ea.sort()) {
+                            if (j == ea.sort()) {
                                 field.set(entity, covertAttrType(field, cell));
                             }
                         }
@@ -61,7 +68,7 @@ public class ExcelImportUtil<T> {
         }
         return list;
     }
- 
+
 
     /**
      * 类型转换 将cell 单元格格式转为 字段类型
@@ -70,20 +77,21 @@ public class ExcelImportUtil<T> {
         String fieldType = field.getType().getSimpleName();
         if ("String".equals(fieldType)) {
             return getValue(cell);
-        }else if ("Date".equals(fieldType)) {
-            return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(getValue(cell)) ;
-        }else if ("int".equals(fieldType) || "Integer".equals(fieldType)) {
+        } else if ("Date".equals(fieldType)) {
+            return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(getValue(cell));
+        } else if ("int".equals(fieldType) || "Integer".equals(fieldType)) {
             return Integer.parseInt(getValue(cell));
-        }else if ("double".equals(fieldType) || "Double".equals(fieldType)) {
+        } else if ("double".equals(fieldType) || "Double".equals(fieldType)) {
             return Double.parseDouble(getValue(cell));
-        }else {
+        } else {
             return null;
         }
     }
- 
- 
+
+
     /**
      * 格式转为String
+     *
      * @param cell
      * @return
      */

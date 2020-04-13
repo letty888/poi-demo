@@ -1,13 +1,33 @@
 package cn.itcast.poi.entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-public class PoiEntity {
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+/**
+ * @author zhang
+ */
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
+@Entity
+@Table(name = "test_entity")
+public class TestEntity {
+
+    @Id
     private String id;
     private String breast;
     private String adipocytes;
     private String negative;
     private String staining;
     private String supportive;
+
 
     public String getId() {
         return id;
