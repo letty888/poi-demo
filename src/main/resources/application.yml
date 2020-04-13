@@ -1,0 +1,29 @@
+
+
+#\u6FC0\u6D3B\u914D\u7F6E\u6587\u4EF6;\u9700\u8981\u6307\u5B9A\u5176\u5B83\u7684\u914D\u7F6E\u6587\u4EF6\u540D\u79F0
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/camp_basic
+    username: root
+    password: root
+
+
+#tomcat端口
+server:
+  port: 80
+#日志记录级别
+logging:
+  level:
+    com.itheima: debug
+    org.springframework: info
+jpa:
+  database: MySQL
+  hibernate:
+    ddl-auto: update
+  show-sql: true
+  open-in-view: true
+  properties:
+    hibernate:
+      format_sql: true
+      use_sql_comments: true

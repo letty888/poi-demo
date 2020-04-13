@@ -1,4 +1,4 @@
-package cn.itcast.poi.entity.cn.itcast.poi.handler;
+package cn.itcast.poi.handler;
 
 import cn.itcast.poi.entity.PoiEntity;
 import org.apache.poi.xssf.eventusermodel.XSSFSheetXMLHandler;

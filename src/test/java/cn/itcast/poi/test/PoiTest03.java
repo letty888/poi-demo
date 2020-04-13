@@ -33,13 +33,13 @@ public class PoiTest03 {
         //创建字体对象
         Font font = wb.createFont();
         font.setFontName("华文行楷"); //字体
-        font.setFontHeightInPoints((short)28);//字号
+        font.setFontHeightInPoints((short) 28);//字号
         style.setFont(font);
 
         //行高和列宽
         row.setHeightInPoints(50);//行高
         //列宽的宽度  字符宽度
-        sheet.setColumnWidth(2,31 * 256);//列宽
+        sheet.setColumnWidth(2, 31 * 256);//列宽
 
         //剧中显示
         style.setAlignment(HorizontalAlignment.CENTER);//水平居中
