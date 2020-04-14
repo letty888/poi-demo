@@ -1,8 +1,11 @@
 package cn.itcast.poi.handler;
 
 import cn.itcast.poi.entity.TestEntity;
+import cn.itcast.poi.service.TestService;
 import cn.itcast.poi.service.impl.TestServiceImpl;
-import cn.itcast.poi.utils.spring.SpringUtil;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.xssf.eventusermodel.XSSFSheetXMLHandler;
 import org.apache.poi.xssf.usermodel.XSSFComment;
@@ -26,15 +29,22 @@ import java.util.List;
 public class SheetHandler implements XSSFSheetXMLHandler.SheetContentsHandler {
 
     @Autowired
-    private TestServiceImpl testServiceImpl;
+    TestService testService;
 
+    /**
+     * excel报表中的数据被封装成了哪个对象,这里就应该申明哪个对象
+     */
     private TestEntity entity;
+
+    /**
+     * 同上
+     */
     private List<TestEntity> testEntityList = new ArrayList<>();
-    public static SheetHandler  sheetHandler;
 
-
-    public SheetHandler() {
-    }
+    /**
+     * 这里和下面的init方法的作用:  为了使service层成功注入
+     */
+    public static SheetHandler sheetHandler;
 
     /**
      * 通过@PostConstruct实现初始化bean之前进行的操作
@@ -42,10 +52,9 @@ public class SheetHandler implements XSSFSheetXMLHandler.SheetContentsHandler {
     @PostConstruct
     public void init() {
         sheetHandler = this;
-        sheetHandler.testServiceImpl = this.testServiceImpl;
+        sheetHandler.testService = this.testService;
         // 初使化时将已静态化的testService实例化
     }
-
 
 
     /**
@@ -66,14 +75,25 @@ public class SheetHandler implements XSSFSheetXMLHandler.SheetContentsHandler {
      */
     @Override
     public void endRow(int i) {
-        System.out.println(entity);
+
         //使用对象进行业务操作
-      //  testEntityList.add(entity);
-        //不清楚什么原因,这里service层注入一直为null,尝试了网上各种方法依然不行
-      /*  if (testEntityList.size() > 100000) {
-            testServiceImpl.saveAll(testEntityList);
+        if (entity != null) {
+            testEntityList.add(entity);
+        }
+
+        if (testEntityList.size() > 100000) {
+            sheetHandler.testService.saveAll(testEntityList);
             testEntityList.clear();
-        }*/
+        }
+
+        /**
+         * 这里需要加入判断:
+         *  比如说 excel报表中 有 905023 条数据
+         *  上面的判断只能向数据库中添加 前 900001条记录,那么剩下的数据应该如何添加进数据库中
+         */
+        if (testEntityList.size() <= 10) {
+
+        }
     }
 
     /**

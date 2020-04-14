@@ -3,6 +3,9 @@ package cn.itcast.poi.service.impl;
 import cn.itcast.poi.dao.TestDao;
 import cn.itcast.poi.entity.TestEntity;
 import cn.itcast.poi.service.TestService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +19,7 @@ import java.util.List;
 public class TestServiceImpl implements TestService {
 
     private final TestDao testDao;
+
 
     public TestServiceImpl(TestDao testDao) {
         this.testDao = testDao;

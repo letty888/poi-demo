@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -38,8 +39,9 @@ public class ExcelImportUtil<T> {
     public List<T> readExcel(InputStream is, int rowIndex, int cellIndex) {
         List<T> list = new ArrayList<T>();
         T entity = null;
+        XSSFWorkbook workbook = null;
         try {
-            XSSFWorkbook workbook = new XSSFWorkbook(is);
+            workbook = new XSSFWorkbook(is);
             Sheet sheet = workbook.getSheetAt(0);
             // 不准确
             int rowLength = sheet.getLastRowNum();
@@ -65,6 +67,14 @@ public class ExcelImportUtil<T> {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (workbook != null) {
+                    workbook.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return list;
     }

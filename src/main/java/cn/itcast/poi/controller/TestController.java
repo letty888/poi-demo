@@ -1,25 +1,66 @@
-package cn.itcast.poi.test;
+package cn.itcast.poi.controller;
 
+import cn.itcast.poi.entity.TestEntity;
 import cn.itcast.poi.handler.SheetHandler;
+import cn.itcast.poi.service.TestService;
+import cn.itcast.poi.utils.importData.ExcelImportBigDataUtils;
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.openxml4j.opc.PackageAccess;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
 import org.apache.poi.xssf.eventusermodel.XSSFSheetXMLHandler;
 import org.apache.poi.xssf.model.SharedStringsTable;
 import org.apache.poi.xssf.model.StylesTable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * 使用事件模型解析百万数据excel报表
+ * @author zhang
+ * @version 1.0
+ * @date 2020/4/14 19:18
  */
-public class PoiTest06 {
+@RestController
+@RequestMapping("/test")
+public class TestController {
 
-    public static void main(String[] args) throws Exception {
+    private final TestService testService;
+
+    public TestController(TestService testService) {
+        this.testService = testService;
+    }
+
+
+    /**
+     * 测试
+     *
+     * @return String 操作结果反馈
+     */
+    @GetMapping("/saveAll")
+    public String saveAll() {
+        List<TestEntity> list = new ArrayList<>();
+        TestEntity testEntity = new TestEntity();
+        testEntity.setId("1");
+        testEntity.setAdipocytes("555");
+        list.add(testEntity);
+        testService.saveAll(list);
+        return "执行成功!";
+    }
+
+    /**
+     * 读取本地文件形式导入大数据量的excel报表
+     *
+     * @throws Exception
+     */
+    @GetMapping
+    public void importData() throws Exception {
         String path = "D:\\BaiduNetdiskDownload\\JAVA\\softstudy\\26-传统行业SaaS解决方案\\08-员工管理及POI\\02-POI报表的高级应用\\资源\\百万数据报表\\demo.xlsx";
         FileInputStream fis = new FileInputStream(path);
         //1.根据excel报表获取OPCPackage
@@ -39,7 +80,8 @@ public class PoiTest06 {
         XSSFReader.SheetIterator sheetIterator = (XSSFReader.SheetIterator) reader.getSheetsData();
         InputStream stream = null;
         while (sheetIterator.hasNext()) {
-            stream = sheetIterator.next(); //每一个sheet的流数据
+            //每一个sheet的流数据
+            stream = sheetIterator.next();
             InputSource is = new InputSource(stream);
             xmlReader.parse(is);
         }
@@ -50,4 +92,13 @@ public class PoiTest06 {
             opcPackage.close();
         }
     }
+
+
+    @PostMapping("/upload")
+    public void upload(@RequestParam("file") MultipartFile file) throws Exception {
+        if (file != null) {
+            ExcelImportBigDataUtils.importBigData(file);
+        }
+    }
 }
+

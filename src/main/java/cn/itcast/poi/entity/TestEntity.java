@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author zhang
@@ -17,9 +19,12 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table(name = "test_entity")
-public class TestEntity {
+public class TestEntity implements Serializable {
+
+    private static final long serialVersionUID = -4990810027542971548L;
 
     @Id
+    //@GeneratedValue(strategy=GenerationType.IDENTITY)
     @ExcelAttribute(sort = 0)
     private String id;
     @ExcelAttribute(sort = 1)
@@ -32,65 +37,4 @@ public class TestEntity {
     private String staining;
     @ExcelAttribute(sort = 5)
     private String supportive;
-
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getBreast() {
-        return breast;
-    }
-
-    public void setBreast(String breast) {
-        this.breast = breast;
-    }
-
-    public String getAdipocytes() {
-        return adipocytes;
-    }
-
-    public void setAdipocytes(String adipocytes) {
-        this.adipocytes = adipocytes;
-    }
-
-    public String getNegative() {
-        return negative;
-    }
-
-    public void setNegative(String negative) {
-        this.negative = negative;
-    }
-
-    public String getStaining() {
-        return staining;
-    }
-
-    public void setStaining(String staining) {
-        this.staining = staining;
-    }
-
-    public String getSupportive() {
-        return supportive;
-    }
-
-    public void setSupportive(String supportive) {
-        this.supportive = supportive;
-    }
-
-    @Override
-    public String toString() {
-        return "PoiEntity{" +
-                "id='" + id + '\'' +
-                ", breast='" + breast + '\'' +
-                ", adipocytes='" + adipocytes + '\'' +
-                ", negative='" + negative + '\'' +
-                ", staining='" + staining + '\'' +
-                ", supportive='" + supportive + '\'' +
-                '}';
-    }
 }
