@@ -1,10 +1,13 @@
 package cn.itcast.poi.controller;
 
 import cn.itcast.poi.entity.BasAera;
+import cn.itcast.poi.entity.TestEntity;
 import cn.itcast.poi.service.BasAeraService;
+import cn.itcast.poi.service.TestService;
 import cn.itcast.poi.utils.export.ExcelExportWithoutTemplateUtil;
 import cn.itcast.poi.utils.export.ExcelWithTemplateExportUtil;
 import cn.itcast.poi.utils.importData.ExcelImportBigDataUtils;
+import cn.itcast.poi.utils.importData.ExcelImportUtil;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.*;
@@ -26,9 +29,11 @@ import java.util.List;
 public class BasAeraController {
 
     private final BasAeraService basAeraService;
+    private final TestService testService;
 
-    public BasAeraController(BasAeraService basAeraService) {
+    public BasAeraController(BasAeraService basAeraService, TestService testService) {
         this.basAeraService = basAeraService;
+        this.testService = testService;
     }
 
     /**
@@ -38,7 +43,7 @@ public class BasAeraController {
      * @throws Exception 异常
      */
     @GetMapping("/export/withTemplate")
-    public void bigDataExport1(HttpServletResponse response) throws Exception {
+    public void withTemplateExport(HttpServletResponse response) throws Exception {
         String fileName = "模板导出数据测试表.xlsx";
         List<BasAera> basAeraList = basAeraService.findAll();
         Resource resource = new ClassPathResource("excel-template/poiDemo.xlsx");
@@ -54,7 +59,7 @@ public class BasAeraController {
      * @throws Exception
      */
     @GetMapping("/export/withoutTemplate")
-    public void bigDataExport2(HttpServletResponse response) throws Exception {
+    public void withoutTemplateExport(HttpServletResponse response) throws Exception {
         String fileName = "模板导出数据测试表.xlsx";
         //标题
         String[] titles =
@@ -65,7 +70,22 @@ public class BasAeraController {
     }
 
     /**
+     * 使用报表导入工具类解析普通级别的数据excel报表
+     *
+     * @param file 文件
+     */
+    @PostMapping("/import/importGeneralData")
+    public void importGeneralData(@RequestParam(name = "file") MultipartFile file) throws Exception {
+        if (file != null) {
+            List<TestEntity> list = new ExcelImportUtil(TestEntity.class).readExcel(file.getInputStream(), 1, 0);
+            testService.saveAll(list);
+        }
+
+    }
+
+    /**
      * 使用事件模型解析百万数据excel报表
+     * (这个方法目前没有测试通,原因:  事件驱动器中注入的service层一直为null)
      *
      * @param file 文件
      */

@@ -70,7 +70,7 @@ public class ExcelWithTemplateExportUtil<T> {
         //3.提取公共的样式
         CellStyle[] styles = getTemplateStyles(sheet.getRow(styleIndex));
         //4.根据数据创建每一行和每一个单元格的数据2
-        AtomicInteger datasAi = new AtomicInteger(rowIndex); //数字
+        AtomicInteger datasAi = new AtomicInteger(rowIndex);
         for (T t : objs) {
             //datasAi.getAndIncrement()  ：获取数字，并++    i++
             Row row = sheet.createRow(datasAi.getAndIncrement());

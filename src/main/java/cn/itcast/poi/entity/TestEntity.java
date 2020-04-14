@@ -1,13 +1,12 @@
 package cn.itcast.poi.entity;
 
+import cn.itcast.poi.annotation.ExcelAttribute;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author zhang
@@ -21,11 +20,17 @@ import javax.persistence.Table;
 public class TestEntity {
 
     @Id
+    @ExcelAttribute(sort = 0)
     private String id;
+    @ExcelAttribute(sort = 1)
     private String breast;
+    @ExcelAttribute(sort = 2)
     private String adipocytes;
+    @ExcelAttribute(sort = 3)
     private String negative;
+    @ExcelAttribute(sort = 4)
     private String staining;
+    @ExcelAttribute(sort = 5)
     private String supportive;
 
 

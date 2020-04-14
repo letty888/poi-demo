@@ -2,6 +2,7 @@ package cn.itcast.poi.service.impl;
 
 import cn.itcast.poi.dao.TestDao;
 import cn.itcast.poi.entity.TestEntity;
+import cn.itcast.poi.service.TestService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * @date 2020/4/13 23:35
  */
 @Service
-public class TestServiceImpl{
+public class TestServiceImpl implements TestService {
 
     private final TestDao testDao;
 
@@ -21,7 +22,7 @@ public class TestServiceImpl{
     }
 
 
-
+    @Override
     public void saveAll(List<TestEntity> testEntity) {
         testDao.saveAll(testEntity);
     }

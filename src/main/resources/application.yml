@@ -8,6 +8,16 @@ spring:
     username: root
     password: root
 
+  jpa:
+    database: MySQL
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
 
 #tomcat端口
 server:
@@ -17,13 +27,3 @@ logging:
   level:
     com.itheima: debug
     org.springframework: info
-jpa:
-  database: MySQL
-  hibernate:
-    ddl-auto: update
-  show-sql: true
-  open-in-view: true
-  properties:
-    hibernate:
-      format_sql: true
-      use_sql_comments: true
