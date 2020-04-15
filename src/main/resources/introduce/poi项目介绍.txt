@@ -1,4 +1,5 @@
 这个项目是springboot+jpa+poi技术,因为创建仓库时忘记添加readme文件,所以在这个txt文件中描述这个项目的功能和用处:
+(笔记在resources/note目录下)
 
 一.背景:
 	目前市面主流的poi技术方案:
