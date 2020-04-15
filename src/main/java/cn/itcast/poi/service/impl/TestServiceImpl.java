@@ -30,4 +30,10 @@ public class TestServiceImpl implements TestService {
     public void saveAll(List<TestEntity> testEntity) {
         testDao.saveAll(testEntity);
     }
+
+    @Override
+    public List<TestEntity> findAll() {
+        List<TestEntity> entityList = testDao.findAll();
+        return entityList;
+    }
 }

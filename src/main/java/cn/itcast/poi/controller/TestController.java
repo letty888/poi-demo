@@ -3,6 +3,7 @@ package cn.itcast.poi.controller;
 import cn.itcast.poi.entity.TestEntity;
 import cn.itcast.poi.handler.SheetHandler;
 import cn.itcast.poi.service.TestService;
+import cn.itcast.poi.utils.export.ExcelExportWithoutTemplateUtil;
 import cn.itcast.poi.utils.importData.ExcelImportBigDataUtils;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
@@ -16,10 +17,12 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -93,12 +96,25 @@ public class TestController {
         }
     }
 
-
+    /**
+     * 使用工具类导入百万条数据
+     *
+     * @param file
+     * @throws Exception
+     */
     @PostMapping("/upload")
     public void upload(@RequestParam("file") MultipartFile file) throws Exception {
         if (file != null) {
             ExcelImportBigDataUtils.importBigData(file);
         }
+    }
+
+    @GetMapping("/export")
+    public void export(HttpServletResponse response) throws Exception {
+        List<TestEntity> entityList = testService.findAll();
+        String[] titles = "序号,姓名,年龄,公司,公司地址,职位级别".split(",");
+        List<Object> objects = Arrays.asList(entityList.toArray());
+        new ExcelExportWithoutTemplateUtil(TestEntity.class,2).export(response, objects, titles,"百万数据导出测试表.xlsx");
     }
 }
 

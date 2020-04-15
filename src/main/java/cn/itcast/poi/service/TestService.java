@@ -14,4 +14,6 @@ public interface TestService {
 
 
     public void saveAll(List<TestEntity> testEntity);
+
+    List<TestEntity> findAll();
 }

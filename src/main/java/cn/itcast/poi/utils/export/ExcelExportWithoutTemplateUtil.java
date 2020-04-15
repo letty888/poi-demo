@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ExcelExportWithoutTemplateUtil<T> {
 
     /**
-     * 写入数据的起始行
+     * 写入数据的起始行(一般情况下是2,因为excel表格第一行是标题,第二行是抬头,从第三行开始才是具体数据)
      */
     private int rowIndex;
 
